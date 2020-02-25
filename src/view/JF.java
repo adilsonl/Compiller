@@ -5,6 +5,7 @@
  */
 package view;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -22,7 +23,7 @@ public class JF extends javax.swing.JFrame {
      */
     public JF() {
         initComponents();
-        
+
     }
 
     /**
@@ -119,13 +120,30 @@ public class JF extends javax.swing.JFrame {
 
     private void jMI_OpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMI_OpenActionPerformed
         // TODO add your handling code here:
-        JFileChooser fileChooser = new JFileChooser(); 
+        JFileChooser fileChooser = new JFileChooser();
 
-            int returnVal = fileChooser.showOpenDialog(this);
+        int returnVal = fileChooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
             try {
-                txt_input.read( new FileReader( file.getAbsolutePath() ), null );
+                
+                BufferedReader bufferedReader = new BufferedReader(new FileReader(file.getPath()));
+                String line;
+                line = bufferedReader.readLine();
+                String fullString = "";
+                while (line != null) {
+
+                    fullString = fullString + line + "\n";
+                    line = bufferedReader.readLine();
+
+                }
+                bufferedReader.close();
+            } catch (IOException ex) {
+
+            }
+
+            try {
+                txt_input.read(new FileReader(file.getAbsolutePath()), null);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Não foi possível acessar o arquivo especificado");
             }
