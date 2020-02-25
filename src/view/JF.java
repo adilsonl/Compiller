@@ -11,6 +11,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import compiler.Compiler;
 
 /**
  *
@@ -41,6 +42,7 @@ public class JF extends javax.swing.JFrame {
         txt_output = new javax.swing.JTextPane();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jBTN_Confirm = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jM_File = new javax.swing.JMenu();
         jMI_Open = new javax.swing.JMenuItem();
@@ -58,6 +60,13 @@ public class JF extends javax.swing.JFrame {
         jLabel1.setText("Input");
 
         jLabel2.setText("Output");
+
+        jBTN_Confirm.setText("Confirmar");
+        jBTN_Confirm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBTN_ConfirmActionPerformed(evt);
+            }
+        });
 
         jM_File.setText("File");
 
@@ -97,22 +106,27 @@ public class JF extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
-                            .addComponent(jLabel2))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(213, 213, 213)
+                                .addComponent(jBTN_Confirm, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(55, Short.MAX_VALUE)
+                .addContainerGap(26, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15)
-                .addComponent(jLabel2)
+                .addGap(9, 9, 9)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jBTN_Confirm))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(35, 35, 35))
         );
 
         pack();
@@ -164,6 +178,15 @@ public class JF extends javax.swing.JFrame {
                 + "Índice Alfabético:");
     }//GEN-LAST:event_jM_LexicalActionPerformed
 
+    private void jBTN_ConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBTN_ConfirmActionPerformed
+        // TODO add your handling code here:
+        String input = txt_input.getText().toString();
+        String output = Compiler.Run(input);
+        txt_output.setText(output);
+        
+
+    }//GEN-LAST:event_jBTN_ConfirmActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -200,6 +223,7 @@ public class JF extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jBTN_Confirm;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenuItem jMI_Open;
