@@ -23,19 +23,18 @@ public class Compiler {
     }
 
     public static String Run(String input) {
-        String output  = "";
+        String output = "";
         output = ("Estatística: \n"
-                + "Quantidade de caracteres (incluindo espaço): "+ countCharacters(input) + " \n"
-                + "Quantidade de caracteres (sem considerar o espaço): "+ countCharactersWithNoSpace(input) + "\n"
-                + "Quantidade de palavras : "+ countWords(input) + " \n"
+                + "Quantidade de caracteres (incluindo espaço): " + countCharacters(input) + " \n"
+                + "Quantidade de caracteres (sem considerar o espaço): " + countCharactersWithNoSpace(input) + "\n"
+                + "Quantidade de palavras : " + countWords(input) + " \n"
                 + "Quantidade de identificadores : \n"
-                + "Quantidade de números (inteiros e reais): \n"
+                + "Quantidade de números (inteiros e reais): " + countNumbers(input) + "\n"
                 + "Quantidade de operadores (relacionais e aritméticos): \n"
-                + "Quantidade de linhas: "+ countLines(input) + " \n"
+                + "Quantidade de linhas: " + countLines(input) + " \n"
                 + "Índice Alfabético:");
-        
+
         return output;
-        
 
     }
 
@@ -78,14 +77,12 @@ public class Compiler {
 
         for (int i = 0; i < characters.length; i++) {
 
-            if ((Character.isLetter(characters[i]) || Character.isDigit(characters[i]) || characters[i] == '–' ) && i != endOfLine) {
+            if ((Character.isLetter(characters[i]) || Character.isDigit(characters[i]) || characters[i] == '–') && i != endOfLine) {
                 isWord = true;
-
 
             } else if (!(Character.isLetter(characters[i]) || Character.isDigit(characters[i]) || characters[i] == '–') && isWord) {
                 wordCount++;
                 isWord = false;
-
 
             } else if (Character.isLetter(characters[i]) && i == endOfLine) {
                 wordCount++;
@@ -94,10 +91,100 @@ public class Compiler {
 
         return wordCount;
     }
-        public static int countLines(String input) {
+
+    public static int countNumbers(String input) {
+        int firstIndex = 0;
+        int secondIndex = 0;
+        int counter = 0;
+        boolean isValid = false;
+
+        String[] lines = input.split("\\n");
+
+        for (String s : lines) {
+
+            for (int i = 0; i < s.length(); i++) {
+                if (Character.isDigit(s.charAt(i))) {
+                    firstIndex = i;
+                    while (i < s.length() && (Character.isDigit(s.charAt(i)) || s.charAt(i) == '.')) {
+                        i++;
+                    }
+                    secondIndex = i;
+                    if( (firstIndex == 0 || !Character.isLetter(s.charAt(firstIndex - 1)  ))  && (secondIndex == s.length() || !Character.isLetter(s.charAt(secondIndex)))){
+                        isValid = AutomatonDigits(s.substring(firstIndex, secondIndex));
+                        if (isValid) {
+                            counter++;
+                        }
+                    }
+
+                }
+            }
+
+        }
+        return counter;
+    }
+
+    public static boolean AutomatonDigits(String s) {
+        char actualChar;
+        boolean error;
+        int actualIndex;
+        int actualState;
+
+        actualState = 0;
+        actualIndex = 0;
+        error = false;
+
+        while (actualIndex < s.length() && !error) {
+            actualChar = s.charAt(actualIndex);
+
+            switch (actualState) {
+                case 0:
+                    if (Character.isDigit(actualChar)) {
+                        actualState = 1;
+                    } else {
+                        error = true;
+                    }
+                    break;
+                case 1:
+                    if (Character.isDigit(actualChar)) {
+                        actualState = 1;
+                    } else if (actualChar == '.') {
+                        actualState = 2;
+                    } else {
+                        error = true;
+                    }
+                    break;
+                case 2:
+                    if (Character.isDigit(actualChar)) {
+                        actualState = 3;
+                    } else {
+                        error = true;
+                    }
+                    break;
+
+                case 3:
+                    if (Character.isDigit(actualChar)) {
+                        actualState = 3;
+                    } else {
+                        error = true;
+                    }
+                    break;
+            }
+            actualIndex++;
+            //System.out.println("Char: " + actualChar + " State: " + actualState);
+
+            //System.out.println("Erro: " + error + " State: " + actualState);
+        }
+        if ((actualState == 1 || actualState == 3) && !error) {
+            return true;
+
+        }
+        return false;
+
+    }
+
+    public static int countLines(String input) {
         int count = 0;
 
-        //Counts each character except space    
         for (int i = 0; i < input.length(); i++) {
             if (input.charAt(i) == '\n') {
                 count++;
@@ -106,5 +193,5 @@ public class Compiler {
         }
         return count;
     }
-    
+
 }
