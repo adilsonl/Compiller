@@ -30,7 +30,7 @@ public class Compiler {
                 + "Quantidade de palavras : " + countWords(input) + " \n"
                 + "Quantidade de identificadores : \n"
                 + "Quantidade de números (inteiros e reais): " + countNumbers(input) + "\n"
-                + "Quantidade de operadores (relacionais e aritméticos): \n"
+                + "Quantidade de operadores (relacionais e aritméticos): " + countOperators(input) + "\n"
                 + "Quantidade de linhas: " + countLines(input) + " \n"
                 + "Índice Alfabético:");
 
@@ -109,7 +109,7 @@ public class Compiler {
                         i++;
                     }
                     secondIndex = i;
-                    if( (firstIndex == 0 || !Character.isLetter(s.charAt(firstIndex - 1)  ))  && (secondIndex == s.length() || !Character.isLetter(s.charAt(secondIndex)))){
+                    if ((firstIndex == 0 || !Character.isLetter(s.charAt(firstIndex - 1))) && (secondIndex == s.length() || !Character.isLetter(s.charAt(secondIndex)))) {
                         isValid = AutomatonDigits(s.substring(firstIndex, secondIndex));
                         if (isValid) {
                             counter++;
@@ -180,6 +180,47 @@ public class Compiler {
         }
         return false;
 
+    }
+
+    public static int countOperators(String input) {
+        int count = 0;
+        for (int i = 0; i < input.length(); i++) {
+            if (input.charAt(i) == '*' || input.charAt(i) == '/' || input.charAt(i) == '+' || input.charAt(i) == '-') {
+                count++;
+            }
+            if (input.charAt(i) == '=') {
+                count++;
+            }
+
+            if (input.charAt(i) == '>') {
+                if (i != (input.length() - 1) && input.charAt(i + 1) == '=') {
+                    count++;
+                    i++;
+
+                } else {
+                    count++;
+                }
+
+            }
+            if (input.charAt(i) == '<') {
+                if (i != (input.length() - 1) && input.charAt(i + 1) == '=') {
+                    count++;
+                    i++;
+
+                } else if (i != (input.length() - 1) && input.charAt(i + 1) == '>') {
+                    count++;
+                    i++;
+
+                } else {
+                    count++;
+
+                }
+
+            }
+
+        }
+        
+        return count;
     }
 
     public static int countLines(String input) {
