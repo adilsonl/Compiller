@@ -5,6 +5,8 @@
  */
 package compiler;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import view.JF;
 
 /**
@@ -28,12 +30,14 @@ public class Compiler {
                 + "Quantidade de caracteres (incluindo espaço): " + countCharacters(input) + " \n"
                 + "Quantidade de caracteres (sem considerar o espaço): " + countCharactersWithNoSpace(input) + "\n"
                 + "Quantidade de palavras : " + countWords(input) + " \n"
-                + "Quantidade de identificadores : \n"
+                + "Quantidade de identificadores: " + countIdentifiers(input) + " \n"
                 + "Quantidade de números (inteiros e reais): " + countNumbers(input) + "\n"
                 + "Quantidade de operadores (relacionais e aritméticos): " + countOperators(input) + "\n"
                 + "Quantidade de linhas: " + countLines(input) + " \n"
-                + "Índice Alfabético:");
+                + "Índice Alfabético: \n"
+                + printIdentifiers(input));
 
+        
         return output;
 
     }
@@ -219,8 +223,140 @@ public class Compiler {
             }
 
         }
-        
+
         return count;
+    }
+
+    //OLD WAY TO COUNT INDENTIFIERS
+    /*public static int countIdentifiers(String input) {
+        if (input == null || input.isEmpty()) {
+            return 0;
+        }
+
+        int idCount = 0;
+
+        boolean isIdentifier = false;
+        int endOfLine = input.length() - 1;
+        char[] characters = input.toCharArray();
+        ArrayList<String> identifiers = new ArrayList<>();
+        String newId;
+
+        for (int i = 0; i < characters.length; i++) {
+
+            if (Character.isLetter(characters[i]) && i != endOfLine) {
+                isIdentifier = true;
+
+            } else if (!(Character.isLetter(characters[i]) || Character.isDigit(characters[i])) && isIdentifier) {
+                idCount++;
+                isIdentifier = false;
+
+            } else if ((Character.isLetter(characters[i])) && i == endOfLine) {
+                idCount++;
+            }
+
+        }
+
+        return idCount;
+    }*/
+
+    public static ArrayList<Identifier> createArrayIdentifiers(String input) {
+
+        int firstIndex = 0;
+        int secondIndex = 0;
+        int counter = 0;
+        boolean hasLine = false;
+        boolean hasId = false;
+        ArrayList<Identifier> identifiers = new ArrayList<>();
+        Identifier newId;
+        CountRepLine countRepLine;
+        String[] lines = input.split("\\n");
+        int line = 1;
+
+        for (String s : lines) {
+
+            for (int i = 0; i < s.length(); i++) {
+                if (Character.isLetter(s.charAt(i))) {
+                    firstIndex = i;
+                    while (i < s.length() && (Character.isDigit(s.charAt(i)) || Character.isLetter(s.charAt(i)))) {
+                        i++;
+                    }
+                    secondIndex = i;
+                    newId = new Identifier();
+                    newId.setIdentifier(s.substring(firstIndex, secondIndex));
+                    for (Identifier id : identifiers) {
+                        if (newId.getIdentifier().equalsIgnoreCase(id.getIdentifier())) {
+                            hasId = true;
+                            id.addTotalRepetitions();
+                            for (CountRepLine cl : id.getRepLines()) {
+                                if (cl.getLine() == line) {
+                                    hasLine = true;
+                                    cl.addRep(i);
+
+                                }
+                            }
+                            if (!hasLine) {
+                                countRepLine = new CountRepLine(1, line);
+                                id.addRepLine(countRepLine);
+                            }
+                        }
+                    }
+                    if (!hasId) {
+                        countRepLine = new CountRepLine(1, line);
+                        newId.addRepLine(countRepLine);
+                        identifiers.add(newId);
+                        
+                    }
+                }
+                hasId = false;
+                hasLine = false;
+            }
+            line++;
+        }
+        IdentifierSorter identifierSort = new IdentifierSorter(identifiers);
+        ArrayList<Identifier> sortedIdentifier = identifierSort.getIdentifierSorter();
+        return sortedIdentifier;
+      
+  
+
+    }
+    
+    public static int countIdentifiers(String input){
+        ArrayList<Identifier> sortedIdentifier = createArrayIdentifiers(input);
+        
+        return sortedIdentifier.size();
+    }
+    
+    public static String printIdentifiers(String input){
+        ArrayList<Identifier> sortedIdentifier = createArrayIdentifiers(input);
+        String output = "";
+        
+        char lastFirstLetter = sortedIdentifier.get(0).getIdentifier().toUpperCase().charAt(0);
+        int index = 0;
+        for (Identifier id : sortedIdentifier) {
+              
+            if((lastFirstLetter != id.getIdentifier().toUpperCase().charAt(0)) ||  index == 0 ){
+                index = 1;
+                output +=  " \n" + id.getIdentifier().toUpperCase().charAt(0) + "\n";
+                
+            }
+              
+             output += " \n" +id.getIdentifier().substring(0, 1).toUpperCase() + id.getIdentifier().substring(1) +
+                    "  (" + id.getTotalRepetitions() + ") : " + id.printArrayLines();
+             
+             lastFirstLetter = id.getIdentifier().toUpperCase().charAt(0);
+            /*if (id.getIdentifier().equalsIgnoreCase("n")) {
+                
+                String output = " ";
+                System.out.println(id.getTotalRepetitions());
+                for (CountRepLine cl : id.getRepLines()) {
+                    output += " " + cl.getLine() + "(" + cl.getRep() + ")";
+                }
+                System.out.println(output);
+            }*/
+
+        }
+        return output;
+        
     }
 
     public static int countLines(String input) {
