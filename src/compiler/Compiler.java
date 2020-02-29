@@ -84,7 +84,7 @@ public class Compiler {
                 wordCount++;
                 isWord = false;
 
-            } else if (Character.isLetter(characters[i]) && i == endOfLine) {
+            } else if ((Character.isLetter(characters[i]) || Character.isDigit(characters[i]) || characters[i] == '–') && i == endOfLine) {
                 wordCount++;
             }
         }
