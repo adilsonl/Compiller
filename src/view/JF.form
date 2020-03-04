@@ -70,7 +70,7 @@
                           <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="213" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="232" max="-2" attributes="0"/>
                               <Component id="jBTN_Confirm" min="-2" pref="128" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -133,7 +133,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="jBTN_Confirm">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Confirmar"/>
+        <Property name="text" type="java.lang.String" value="Confirm"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBTN_ConfirmActionPerformed"/>

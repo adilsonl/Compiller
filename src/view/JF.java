@@ -61,7 +61,7 @@ public class JF extends javax.swing.JFrame {
 
         jLabel2.setText("Output");
 
-        jBTN_Confirm.setText("Confirmar");
+        jBTN_Confirm.setText("Confirm");
         jBTN_Confirm.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBTN_ConfirmActionPerformed(evt);
@@ -108,7 +108,7 @@ public class JF extends javax.swing.JFrame {
                             .addComponent(jLabel1)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
-                                .addGap(213, 213, 213)
+                                .addGap(232, 232, 232)
                                 .addComponent(jBTN_Confirm, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -166,16 +166,9 @@ public class JF extends javax.swing.JFrame {
 
     private void jM_LexicalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jM_LexicalActionPerformed
         // TODO add your handling code here:
-        txt_output.setText("");
-        txt_output.setText("Estatística: \n"
-                + "Quantidade de caracteres (incluindo espaço):\n"
-                + "Quantidade de caracteres (sem considerar o espaço):\n"
-                + "Quantidade de palavras : \n"
-                + "Quantidade de identificadores : \n"
-                + "Quantidade de números (inteiros e reais): \n"
-                + "Quantidade de operadores (relacionais e aritméticos): \n"
-                + "Quantidade de linhas: \n"
-                + "Índice Alfabético:");
+        String input = txt_input.getText().toString();
+        String output = Compiler.Run(input);
+        txt_output.setText(output);
     }//GEN-LAST:event_jM_LexicalActionPerformed
 
     private void jBTN_ConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBTN_ConfirmActionPerformed
@@ -183,7 +176,6 @@ public class JF extends javax.swing.JFrame {
         String input = txt_input.getText().toString();
         String output = Compiler.Run(input);
         txt_output.setText(output);
-        
 
     }//GEN-LAST:event_jBTN_ConfirmActionPerformed
 
